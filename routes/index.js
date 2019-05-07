@@ -1,15 +1,15 @@
 var express = require('express');
-var router = express.Router();
+var app = express();
 
 var Kitchen = require('../models/kitchen');
 
 /* GET home page. */
-// router.get('/kitchen', function(req, res, next) {
-//   res.render('index', { title: 'Express' });
-// });
+app.get('/', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
 
 
-router.get('/kitchen', (req, res, next) => {
+app.get('/kitchen', (req, res, next) => {
 
     Kitchen.find({})
         .exec(
@@ -29,4 +29,40 @@ router.get('/kitchen', (req, res, next) => {
             });
 });
 
-module.exports = router;
+app.post('/kitchen', (req, res) => {
+
+    var body = req.body;
+
+    var kitchen = new Kitchen({
+        name: body.name,
+        image: body.image,
+        assessment: body.assessment,
+        information: body.information,
+        difficulty: body.difficulty,
+        time: body.time,
+        ingredients: body.ingredients,
+        steps: body.steps,
+        tips: body.tips,
+    });
+
+    kitchen.save((err, kitchenGuardado) => {
+
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                mensaje: 'Error al crear usuario',
+                errors: err
+            });
+        }
+
+        res.status(201).json({
+            ok: true,
+            kitchen: kitchenGuardado
+        });
+
+
+    });
+
+});
+
+module.exports = app;
