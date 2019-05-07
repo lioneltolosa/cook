@@ -3,7 +3,7 @@ var app = express();
 
 var Kitchen = require('../models/kitchen');
 
-app.get('/kitchen', (req, res, next) => {
+app.get('/', (req, res, next) => {
 
     Kitchen.find({})
         .exec(
@@ -23,7 +23,7 @@ app.get('/kitchen', (req, res, next) => {
             });
 });
 
-app.post('/kitchen', (req, res) => {
+app.post('/', (req, res) => {
 
     var body = req.body;
 
